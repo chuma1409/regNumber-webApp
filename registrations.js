@@ -11,18 +11,18 @@ module.exports = function Registrations(){
 	
 // 	}	
 // 	}	
-function setRegNumber(regNumber){
-	const Dname = await pool.query(`SELECT location FROM regLocation  
-		WHERE location = $1`,[newReg]);
-		if ( Dname.rowCount === 0){
-			const insertReg = await pool.query(`INSERT INTO greet(name, counter) VALUES ($1, 1)`,[newName]);
-		}else {
-	 const counter = await pool.query(`UPDATE greet 
-		SET counter= counter+1
-		WHERE location =$1`,[newReg]);
-			}	
-		}		
-}
+// function setRegNumber(regNumber){
+// 	const Dname = await pool.query(`SELECT location FROM regLocation  
+// 		WHERE location = $1`,[newReg]);
+// 		if ( Dname.rowCount === 0){
+// 			const insertReg = await pool.query(`INSERT INTO greet(name, counter) VALUES ($1, 1)`,[newName]);
+// 		}else {
+// 	 const counter = await pool.query(`UPDATE greet 
+// 		SET counter= counter+1
+// 		WHERE location =$1`,[newReg]);
+// 			}	
+// 		}		
+// }
 
 function filter(list, value){
 	const filteredList = [];
