@@ -40,6 +40,20 @@ body {
 .addRegNumber btn blue{
     background-color: dodgerblue;
 }
+.resetBtn {
+	background-color: dodgerblue;
+	margin: 1em;
+	padding: 1em;
+	font-size: 1em;
+	border-radius: 0.25em;
+}
+.button-primary filterBtn{
+	background-color: dodgerblue;
+	margin: 1em;
+	padding: 1em;
+	font-size: 1em;
+	border-radius: 0.25em;
+}
 .message {
 	height: 1em;
 	font-weight: bold;
@@ -48,6 +62,18 @@ body {
 
 .regNumber {
 
+	background-color: yellow;
+	border: 0.1em solid;
+	border-radius: 0.25em;
+	padding: 1em;
+	margin: 0.5em;
+	width: 7em;
+	text-align: center;
+	font-weight: bold;
+	float: left;
+
+}
+.reg {
 	background-color: yellow;
 	border: 0.1em solid;
 	border-radius: 0.25em;

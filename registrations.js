@@ -1,52 +1,40 @@
-module.exports = function Registrations(){
+//const { Pool } = require("pg");
 
-	// const regNumberList = [];
-	
-//  function addReg(regNumberEnetered){
-
-// 	if(!regNumberList.includes(currentRegNumber)){
-// 		regNumberList.push(currentRegNumber)
-
+module.exports = function Registrations(pool) {
 
 	
-// 	}	
-// 	}	
-// function setRegNumber(regNumber){
-// 	const Dname = await pool.query(`SELECT location FROM regLocation  
-// 		WHERE location = $1`,[newReg]);
-// 		if ( Dname.rowCount === 0){
-// 			const insertReg = await pool.query(`INSERT INTO greet(name, counter) VALUES ($1, 1)`,[newName]);
-// 		}else {
-// 	 const counter = await pool.query(`UPDATE greet 
-// 		SET counter= counter+1
-// 		WHERE location =$1`,[newReg]);
-// 			}	
-// 		}		
-// }
 
-function filter(list, value){
-	const filteredList = [];
-	for(var i=0; i<list.length;i++){
-		const currentItem = list[i];
-		if(currentItem.indexOf(value) !== -1){
-			filteredList.push(currentItem)
-	}
-}
-return filteredList;
-}
+	// async function setRegNumber(regInserted) {
+	
+	// 	var string = regInserted.substring(0, 2).trim()
+	// 	var checking = await regCheck(string)
+	// 	var id = checking.rows[0].id
 
-function showList(list){
-	regNumber.innerHTML = "";
-	for(var i=0; i<list.length;i++){
-		const currentItem = list[i];
-		const theRegList = document.createElement("li");
-		theRegList.innerHTML = currentItem;
-		regNumber.appendChild(theRegList)
+	// 	var insert = await pool.query(`INSERT INTO regNumber (number_plate, reg_key) values ($1, $2)`, [regInserted]);
+	// 	console.log(insert)
+	// 	return insert;
+
+    async function setRegNumber(regInserted) {
+        let select = await pool.query('select reg_number from regNumbers where reg_number=$1', [regInserted])
+        if (select.rowCount === 0) {
+            await pool.query('insert into regNumbers (reg_number) values ($1)', [regInserted])
+        }
     }
-}
-    return{
-		// addReg,
-        filter,
-        showList
+    async function showList() {
+        const list = await pool.query('select reg_number from regNumbers')
+		console.log(list.rows)
+		return list.rows;
     }
+    async function resetBtn() {
+        await pool.query('delete from regNumbers')
+    }
+
+  
+    return {
+        showList,
+        setRegNumber,
+        resetBtn
+        
+    }
+
 }
