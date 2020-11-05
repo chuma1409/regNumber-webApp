@@ -17,32 +17,40 @@
 		<div>
 			<h1>Registration numbers</h1>
  <form action="/registrations" method="POST">
+     <div class="errors">
+                    <p>{{messages.error}}</p>
+                </div>
+				  <div class="success">
+                    <p>{{exists.success}}</p>
+                </div>
 			<div>
-				<input type="text" name="regiNumber" id="inputElement" placeholder="enter a registration number" >
+				<input type="text" name="regiNumber" id="registrations" placeholder="enter a registration number" >
 				<input type="submit" value="Add reg number" class="addRegNumber btn blue">
-				 <input type="submit"  value="filter" class="addRegNumber btn blue" name="button">
-                <a href="/reset">Reset</a>
+				<button value="reset" class="addRegNumber btn blue">  <a href="/reset">Reset</a></button>
+              
 				{{!-- <a href="/reset" ><button type="button" class="resetBtn">reset</button></a> --}}
 			</div>
 </form>
 			<div class="filter">
 			
-  <form action="/filter:town" method="POST">
+ 
+        <form action="/registrations" method="GET">
   <div class="selector">
             <h3>Select a Town:</h3>
             <div class="selectTown">
                 <select name="towns" class="towns">
                     <option value="All">All Towns</option>
-                    <option value="CY">Bellville</option>
-                    <option value="CA">Cape Town</option>
-                    <option value="CJ">Paarl</option>
+                    <option value="2">Bellville</option>
+                    <option value="3">Cape Town</option>
+                    <option value="1">Paarl</option>
                 </select>
+				 <input type="submit" value="Filter" class="button-primary filter" style="">
 			</div>
 			<hr>
 			   <div>
         <ul>
             {{#each reg_number}}
-            <li class="displayHere">{{reg_number}}
+            <li class="displayHere">{{this.reg_number}}
             </li>
             {{/each}}
         </ul>

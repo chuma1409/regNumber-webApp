@@ -42,27 +42,7 @@ app.use(session({
 // initialise the flash middleware
 app.use(flash());
 
-// app.get('/', function(req,res){
-//     req.flash('info', 'Welcome');
-//     res.render('index')
-// })
 
-// app.get('/', function (req, res) {
-//   res.render('index')
-// })
-
-// app.get('/', async function (req, res) {
-//   // var list =  await registrations.showList();
-//   // res.render('index', {
-//   //   list: list
-//   // })
-
-//     const reg = await regNumbers.showAll();
-//     res.render("index", {
-//       reg: reg
-//     })
-//   // }
-// });
 
 // app.post('/registrations', async function (req, res) {
 //   var regNmbr = _.upperCase(req.body.regiNumber)
@@ -90,9 +70,12 @@ app.get("/", async function(req, res) {
 
 app.post("/registrations", async function(req, res) {
   var name = req.body.regiNumber
-
-  if (name.startsWith('CY ') || name.startsWith('CA ') || name.startsWith('CJ ')) {
-      await registrations.setRegNumber(name);
+  let checkDuplicate = await registrations.repCheck(name)
+  if (checkDuplicate !== 0) {
+    req.flash('exists', 'This registration has already been added')
+   
+  }else if (name.startsWith('CY ') || name.startsWith('CA ') || name.startsWith('CJ ')) {
+    await registrations.setRegNumber(name);
       var reg = await registrations.showList();
   } else if (!name.startsWith('CY ') || !name.startsWith('CA ') || !name.startsWith('CL ')) {
       req.flash('error', 'Please enter a valid registration')
@@ -102,6 +85,15 @@ app.post("/registrations", async function(req, res) {
 
   res.render("index", {
       reg_number: reg
+  });
+});
+app.get("/registrations", async function(req, res) {
+  let towns = req.query.towns
+
+  let filteredList = await registrations.filter(towns);
+
+  res.render("index", {
+      reg_number: filteredList
   });
 });
 
