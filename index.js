@@ -69,27 +69,48 @@ app.get("/", async function(req, res) {
 });
 
 app.post("/registrations", async function(req, res) {
-  var regPlate = req.body.regiNumber
+  var regPlate = req.body.regiNumber.toUpperCase()
   let checkDuplicate = await registrations.repCheck(regPlate)
   
-  if (checkDuplicate !== 0) {
+
+  if (regPlate == ""){
+    req.flash('error',"Please enter Registration")
+
+} 
+else if ((!/C[AYJ]\s\d{3,5}$|C[AYJ]\s\d{3,5}-\d{4}$/)){
+  req.flash('error', 'Please enter a valid registration')
+  var reg = await registrations.showList();
+}
+// else if (!regPlate.startsWith('CY ') || !regPlate.startsWith('CA ') || !regPlate.startsWith('CJ ')) {
+//   req.flash('error', 'Please enter a valid registration')
+//   var reg = await registrations.showList();
+// }
+
+
+
+ else if (checkDuplicate !== 0) {
     await registrations.setRegNumber(regPlate);
     var reg = await registrations.showList();
     req.flash('exists', 'This registration has already been added')
    
    
-  }else if (regPlate.startsWith('CY ') || regPlate.startsWith('CA ') || regPlate.startsWith('CJ ')) {
-   req.flash('success','Registration has been sucessfully added')
-    await registrations.setRegNumber(regPlate);
-      var reg = await registrations.showList();
-    } else if (regPlate == ""){
-      req.flash('error',"Please enter Registration")
-    
-  
-  } else if (!regPlate.startsWith('CY ') || !regPlate.startsWith('CA ') || !regPlate.startsWith('CL ')) {
-      req.flash('error', 'Please enter a valid registration')
-      var reg = await registrations.showList();
   }
+
+  else {
+     await registrations.setRegNumber(regPlate)
+    var reg = await registrations.showList();
+    req.flash('success','Registration has been sucessfully added')
+  }
+  // else if (regPlate.startsWith('CY ') || regPlate.startsWith('CA ') || regPlate.startsWith('CJ ')) {
+  //  req.flash('success','Registration has been sucessfully added')
+  //   await registrations.setRegNumber(regPlate);
+  //     var reg = await registrations.showList();
+  //   } 
+
+
+
+
+
 
 
   res.render("index", {

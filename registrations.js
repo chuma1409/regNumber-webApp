@@ -21,12 +21,16 @@ module.exports = function Registrations(pool) {
 	// }
 
 	async function setRegNumber(regInserted) {
-		if(!regInserted == ""){
-		if (/C[AYJ] \d{3,6}$/.test(regInserted) || /C[AYJ] \d{3}-\d{3}$/.test(regInserted)) {
+		//var regexNumber = 
+		// newRegex = new RegExp(regexNumber);
+		// regexTest = newRegex.test(regInserted)
+		 //var newReg = regInserted.toUpperCase()
+		// if(!regInserted == ""){
+		// if (/C[AYJ] \d{3,6}$/.test(regInserted) || /C[AYJ] \d{3}-\d{3}$/.test(regInserted)) {
 		var string = regInserted.substring(0, 2).trim()
 		var town_id = await pool.query(`select id from towns where start_string=$1`, [string])
 		var idcheck = town_id.rows[0].id
-		var select;
+		let select;
 		if (idcheck > 0) {
 			select = await pool.query('select reg_number from regNumbers where reg_number=$1', [regInserted])
 		}else {
@@ -39,11 +43,11 @@ module.exports = function Registrations(pool) {
 			return false
 		}
 	}
-	else{
-		return false
-	}
-}
-}
+	// else{
+	// 	return false
+	// } 
+// }
+// }
 	async function showList() {
 		const list = await pool.query('select reg_number from regNumbers')
 		console.log(list.rows)
