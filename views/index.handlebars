@@ -17,15 +17,17 @@
 		<div>
 			<h1>Registration numbers</h1>
  <form action="/registrations" method="POST">
-     <div class="error">
-                    <p>{{messages.error}}</p>
-                </div>
+     {{!-- <div class="error">
+                   
+                </div> --}}
 				     <div class="exists">
+						  <p>{{messages.error}}</p>
                     <p>{{messages.exists}}</p>
+					  <p>{{messages.success}}</p>
                 </div>
-				  <div class="success">
-                    <p>{{messages.success}}</p>
-                </div>
+				  {{!-- <div class="success">
+                  
+                </div> --}}
 			<div>
 				<input type="text" name="regiNumber" id="registrations" placeholder="enter a registration number" >
 				<input type="submit" value="Add reg number" class="addRegNumber btn blue">

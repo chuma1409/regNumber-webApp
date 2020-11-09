@@ -71,6 +71,7 @@ app.get("/", async function(req, res) {
 app.post("/registrations", async function(req, res) {
   var regPlate = req.body.regiNumber
   let checkDuplicate = await registrations.repCheck(regPlate)
+  
   if (checkDuplicate !== 0) {
     await registrations.setRegNumber(regPlate);
     var reg = await registrations.showList();
