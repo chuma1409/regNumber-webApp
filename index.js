@@ -69,40 +69,54 @@ app.get("/", async function(req, res) {
 });
 
 app.post("/registrations", async function(req, res) {
-  var name = req.body.regiNumber
-  let checkDuplicate = await registrations.repCheck(name)
+  var regPlate = req.body.regiNumber
+  let checkDuplicate = await registrations.repCheck(regPlate)
   if (checkDuplicate !== 0) {
+    await registrations.setRegNumber(regPlate);
+    var reg = await registrations.showList();
     req.flash('exists', 'This registration has already been added')
    
-  }else if (name.startsWith('CY ') || name.startsWith('CA ') || name.startsWith('CJ ')) {
-    await registrations.setRegNumber(name);
+   
+  }else if (regPlate.startsWith('CY ') || regPlate.startsWith('CA ') || regPlate.startsWith('CJ ')) {
+   req.flash('success','Registration has been sucessfully added')
+    await registrations.setRegNumber(regPlate);
       var reg = await registrations.showList();
-  } else if (!name.startsWith('CY ') || !name.startsWith('CA ') || !name.startsWith('CL ')) {
+    } else if (regPlate == ""){
+      req.flash('error',"Please enter Registration")
+    
+  
+  } else if (!regPlate.startsWith('CY ') || !regPlate.startsWith('CA ') || !regPlate.startsWith('CL ')) {
       req.flash('error', 'Please enter a valid registration')
+      var reg = await registrations.showList();
   }
-
 
 
   res.render("index", {
       reg_number: reg
   });
 });
+
 app.get("/registrations", async function(req, res) {
-  let towns = req.query.towns
-
-  let filteredList = await registrations.filter(towns);
-
-  res.render("index", {
-      reg_number: filteredList
-  });
-});
-
-app.post("/filter:town",async function(req, res) {
-  let towns = await req.body.towns
+  var town = req.query.town
+if(town === "") {
+  req.flash('error', "please select town")
+}else{
+  var filteredList = await registrations.filter(town); 
+}
 
 
-  res.render("index");
-});
+res.render("index", {
+  reg_number: filteredList
+})
+
+})
+
+// app.post("/registrations",async function(req, res) {
+//   let towns = await req.body.towns
+
+
+//   res.render("index");
+// });
 
 
 app.get("/reset", async function(req, res) {

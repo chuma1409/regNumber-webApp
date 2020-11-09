@@ -54,12 +54,21 @@ body {
 	font-size: 1em;
 	border-radius: 0.25em;
 }
-.message {
+.exists {
 	height: 1em;
 	font-weight: bold;
-	color: crimson;
+	color: orange;
 }
-
+.success{
+	height: 1em;
+	font-weight: bold;
+	color: green
+}
+.error{
+	height: 1em;
+	font-weight: bold;
+	color: red
+}
 .regNumber {
 
 	background-color: yellow;
@@ -102,6 +111,9 @@ li {
 	font-weight: bold;
 	float: left;
 }
+body {
+	background-image: url('cars.jpg');
+  }
 
 input[type='radio'] {
 	margin: 1em;

@@ -17,11 +17,14 @@
 		<div>
 			<h1>Registration numbers</h1>
  <form action="/registrations" method="POST">
-     <div class="errors">
+     <div class="error">
                     <p>{{messages.error}}</p>
                 </div>
+				     <div class="exists">
+                    <p>{{messages.exists}}</p>
+                </div>
 				  <div class="success">
-                    <p>{{exists.success}}</p>
+                    <p>{{messages.success}}</p>
                 </div>
 			<div>
 				<input type="text" name="regiNumber" id="registrations" placeholder="enter a registration number" >
@@ -38,12 +41,14 @@
   <div class="selector">
             <h3>Select a Town:</h3>
             <div class="selectTown">
-                <select name="towns" class="towns">
-                    <option value="All">All Towns</option>
-                    <option value="2">Bellville</option>
-                    <option value="3">Cape Town</option>
-                    <option value="1">Paarl</option>
-                </select>
+				<strong>Filter by town</strong>
+
+				<input class="towns" name="town" type="radio" value="All">Show all
+				<input class="towns" name="town" type="radio" value="CY">Bellville
+				<input class="towns" name="town" type="radio" value="CJ">Paarl
+				<input class="towns" name="town" type="radio"value="CA"> Cape Town
+
+			</div>
 				 <input type="submit" value="Filter" class="button-primary filter" style="">
 			</div>
 			<hr>
