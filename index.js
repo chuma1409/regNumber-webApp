@@ -74,20 +74,22 @@ app.post("/registrations", async function(req, res) {
   
 
   if (regPlate == ""){
-    req.flash('error',"Please enter Registration")
+    var reg = await registrations.showList();
+    req.flash('error',"Please enter Registration Number")
 
 } 
-else if ((!/C[AYJ]\s\d{3,5}$|C[AYJ]\s\d{3,5}-\d{4}$/)){
-  req.flash('error', 'Please enter a valid registration')
-  var reg = await registrations.showList();
-}
+
 // else if (!regPlate.startsWith('CY ') || !regPlate.startsWith('CA ') || !regPlate.startsWith('CJ ')) {
 //   req.flash('error', 'Please enter a valid registration')
 //   var reg = await registrations.showList();
 // }
 
 
-
+ else if (!regPlate == (/C[AYJ]\s\d{3,5}$||C[AYJ]\s\d{3,5}-\d{4}$/)){
+  var reg = await registrations.showList();
+  req.flash('error', 'Please enter a valid registration')
+ 
+}
  else if (checkDuplicate !== 0) {
     await registrations.setRegNumber(regPlate);
     var reg = await registrations.showList();
@@ -95,7 +97,7 @@ else if ((!/C[AYJ]\s\d{3,5}$|C[AYJ]\s\d{3,5}-\d{4}$/)){
    
    
   }
-
+  
   else {
      await registrations.setRegNumber(regPlate)
     var reg = await registrations.showList();

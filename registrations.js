@@ -30,6 +30,7 @@ module.exports = function Registrations(pool) {
 		var string = regInserted.substring(0, 2).trim()
 		var town_id = await pool.query(`select id from towns where start_string=$1`, [string])
 		var idcheck = town_id.rows[0].id
+		// console.log(idcheck);
 		let select;
 		if (idcheck > 0) {
 			select = await pool.query('select reg_number from regNumbers where reg_number=$1', [regInserted])
