@@ -78,7 +78,7 @@ describe("Registrations", function () {
         await registrations.setRegNumber("CA 123")
        
 
-        assert.deepEqual([{reg_number: "CA 123"}],[{reg_number: "CA 123"}], await registrations.repCheck());
+        assert.deepEqual([{reg_number: "CA 123"}], await registrations.showList());
 
     })
     after(async function () {

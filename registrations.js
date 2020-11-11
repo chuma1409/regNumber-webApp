@@ -14,7 +14,7 @@ module.exports = function Registrations(pool) {
 		}else {
 			return false
 		}
-// 
+
 		if (select.rowCount == 0) {
 			await pool.query('insert into regNumbers (reg_number, town_id) values ($1, $2)', [regInserted, idcheck])
 		}else{
