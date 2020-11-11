@@ -1,6 +1,9 @@
 module.exports = function route(registrations){
     const home = async function(req, res){
-        res.render("index");
+        var reg = await registrations.showList();
+        res.render("index", {
+            reg_number: reg
+        });
     };
     const addReg = async function(req, res) {
         var regPlate = req.body.regiNumber.toUpperCase()

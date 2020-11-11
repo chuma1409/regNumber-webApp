@@ -20,7 +20,7 @@
      {{!-- <div class="error">
                    
                 </div> --}}
-				eg. CA 1234; CJ 098765; CY 456
+				eg. CA 1234 | CJ 0987-653 | CY 456
 				     <div class="error">
 						  <p>{{messages.error}}</p>
                     <p>{{messages.exists}}</p>
@@ -32,7 +32,8 @@
 			<div>
 				<input type="text" name="regiNumber" id="registrations" placeholder="enter a registration number" >
 				<input type="submit" value="Add reg number" class="addRegNumber btn blue">
-				<button value="reset" class="addRegNumber btn blue">  <a href="/reset">Reset</a></button>
+				  <a href="/reset" ><button type="button" class="resetBtn">reset</button></a>
+				{{!-- <button value="reset" class="addRegNumber btn blue">  <a href="/reset">Reset</a></button> --}}
               
 				{{!-- <a href="/reset" ><button type="button" class="resetBtn">reset</button></a> --}}
 			</div>

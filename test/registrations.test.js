@@ -63,6 +63,7 @@ describe("Registrations", function () {
 
         assert.deepEqual( [{ reg_number: "CA 98765" }], await registrations.filter('CA'));
     });
+  
     it("should be able to filter for Bellville", async function () {
         const registrations = Registrations(pool)
 
@@ -70,6 +71,16 @@ describe("Registrations", function () {
 
         assert.deepEqual( [{ reg_number: "CY 98765" }], await registrations.filter('CY'));
     });
+    it("should be able to check duplicate", async function(){
+        const registrations = Registrations(pool)
+
+        await registrations.setRegNumber("CA 123")
+        await registrations.setRegNumber("CA 123")
+       
+
+        assert.deepEqual([{reg_number: "CA 123"}],[{reg_number: "CA 123"}], await registrations.repCheck());
+
+    })
     after(async function () {
         pool.end();
     })
