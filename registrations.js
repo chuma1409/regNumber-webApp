@@ -2,31 +2,8 @@
 
 module.exports = function Registrations(pool) {
 
-
-
-	// async function setRegNumber(regInserted) {
-
-	// 	var string = regInserted.substring(0, 2).trim()
-	// 	var checking = await regCheck(string)
-	// 	var id = checking.rows[0].id
-
-	// 	var insert = await pool.query(`INSERT INTO regNumber (number_plate, reg_key) values ($1, $2)`, [regInserted]);
-	// 	console.log(insert)
-	// 	return insert;
-	// async function regex(numberPlate) {
-	// 	var regex = /C[AYJ]\s\d{3,10}-\d{3,10}|C[AYJ]\s\d{3}/gi
-	// 	var tests = regex.test(numberPlate)
-	// 	await setRegNumber(numberPlate)
-	// 	return tests
-	// }
-
 	async function setRegNumber(regInserted) {
-		//var regexNumber = 
-		// newRegex = new RegExp(regexNumber);
-		// regexTest = newRegex.test(regInserted)
-		 //var newReg = regInserted.toUpperCase()
-		// if(!regInserted == ""){
-		// if (/C[AYJ] \d{3,6}$/.test(regInserted) || /C[AYJ] \d{3}-\d{3}$/.test(regInserted)) {
+
 		var string = regInserted.substring(0, 2).trim()
 		var town_id = await pool.query(`select id from towns where start_string=$1`, [string])
 		var idcheck = town_id.rows[0].id
@@ -44,11 +21,7 @@ module.exports = function Registrations(pool) {
 			return false
 		}
 	}
-	// else{
-	// 	return false
-	// } 
-// }
-// }
+
 	async function showList() {
 		const list = await pool.query('select reg_number from regNumbers')
 		console.log(list.rows)
@@ -58,7 +31,9 @@ module.exports = function Registrations(pool) {
 		let checkDuplicate = await pool.query('select reg_number from regNumbers where reg_number=$1', [regInserted])
 		return checkDuplicate.rowCount;
 	}
-
+	function checkRegex(plate) {
+        return (/C[YAJ] \d{3,5}$/.test(plate) || /C[YAJ] \d{3,4}-\d{2,4}$/.test(plate))
+    }
 	async function resetBtn() {
 		const clear = await pool.query('delete from regNumbers')
 		return clear.rows
@@ -85,7 +60,7 @@ module.exports = function Registrations(pool) {
 
 
 	return {
-		// regex,
+		checkRegex,
 		showList,
 		repCheck,
 		setRegNumber,

@@ -10,7 +10,7 @@ const flash = require('express-flash');
 const session = require('express-session');
 const Registrations = require("./registrations");
 const _ = require("lodash")
-// const route = require("./routes")
+const route = require("./routes")
 const pg = require("pg");
 const Pool = pg.Pool;
 const connectionString = process.env.DATABASE_URL || 'postgresql://chuma:pg123@localhost:5432/registration';
@@ -18,7 +18,7 @@ const pool = new Pool({
   connectionString
 });
 const registrations = Registrations(pool)
-// const routes = route(greetings)
+const routes = route(registrations)
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
@@ -42,111 +42,14 @@ app.use(session({
 // initialise the flash middleware
 app.use(flash());
 
+app.get("/",routes.home) 
 
 
-// app.post('/registrations', async function (req, res) {
-//   var regNmbr = _.upperCase(req.body.regiNumber)
-//   if(!regNmbr){
-//     req.flash('error', "Please enter valid registration number")
-//   }else{
-//     var setted = await registrations.setRegNumber(regNmbr)
-//   }
- 
- 
-//   var list =  await registrations.showList();
-// res.render('index', {
-//   setted,
-//   list: list
+app.post("/registrations", routes.addReg)
 
+app.get("/registrations", routes.filter)
 
-// });
-
-// });
-
-app.get("/", async function(req, res) {
-
-  res.render("index");
-});
-
-app.post("/registrations", async function(req, res) {
-  var regPlate = req.body.regiNumber.toUpperCase()
-  let checkDuplicate = await registrations.repCheck(regPlate)
-  
-
-  if (regPlate == ""){
-    var reg = await registrations.showList();
-    req.flash('error',"Please enter Registration Number")
-
-} 
-
-// else if (!regPlate.startsWith('CY ') || !regPlate.startsWith('CA ') || !regPlate.startsWith('CJ ')) {
-//   req.flash('error', 'Please enter a valid registration')
-//   var reg = await registrations.showList();
-// }
-
-
- else if (!regPlate == (/C[AYJ]\s\d{3,5}$||C[AYJ]\s\d{3,5}-\d{4}$/)){
-  var reg = await registrations.showList();
-  req.flash('error', 'Please enter a valid registration')
- 
-}
- else if (checkDuplicate !== 0) {
-    await registrations.setRegNumber(regPlate);
-    var reg = await registrations.showList();
-    req.flash('exists', 'This registration has already been added')
-   
-   
-  }
-  
-  else {
-     await registrations.setRegNumber(regPlate)
-    var reg = await registrations.showList();
-    req.flash('success','Registration has been sucessfully added')
-  }
-  // else if (regPlate.startsWith('CY ') || regPlate.startsWith('CA ') || regPlate.startsWith('CJ ')) {
-  //  req.flash('success','Registration has been sucessfully added')
-  //   await registrations.setRegNumber(regPlate);
-  //     var reg = await registrations.showList();
-  //   } 
-
-
-
-
-
-
-
-  res.render("index", {
-      reg_number: reg
-  });
-});
-
-app.get("/registrations", async function(req, res) {
-  var town = req.query.town
-if(town === "") {
-  req.flash('error', "please select town")
-}else{
-  var filteredList = await registrations.filter(town); 
-}
-
-
-res.render("index", {
-  reg_number: filteredList
-})
-
-})
-
-// app.post("/registrations",async function(req, res) {
-//   let towns = await req.body.towns
-
-
-//   res.render("index");
-// });
-
-
-app.get("/reset", async function(req, res) {
-  await registrations.resetBtn()
-  res.redirect("/")
-});
+app.get("/reset", routes.reset);
 
 const PORT = process.env.PORT || 3330;
 
